@@ -77,9 +77,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
         this.setState((prevState) => ({
             ...prevState,
             operation: value
-        }), () => {
-            this.state.input_1 && this.state.input_2 && this.calculateResult();
-        })
+        }))
     }
 
     validateInputs(input_1: any = this.state.input_1, input_2: any = this.state.input_2) {

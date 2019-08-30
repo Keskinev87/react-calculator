@@ -10,7 +10,7 @@ interface OperationProps {
 
 function OperationComponent (props: OperationProps) {
     return (
-        <div className={"operation " + props.class} id={props.id} onClick={props.onClick}><div className="operation-sign">{props.value}</div></div>
+        <div className={"operation " + props.class}><div id={props.id} className="operation-sign" onClick={props.onClick}>{props.value}</div></div>
     )
 }
 
