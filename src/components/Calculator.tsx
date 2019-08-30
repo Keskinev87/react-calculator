@@ -112,6 +112,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
     }
 
     compareMemoryRecords(record_1: OperationRecord | undefined, record_2: OperationRecord | undefined) {
+
         let different = true;
 
         if(record_1 && record_2 && record_1.input_1 === record_2.input_1 && record_1.input_2 === record_2.input_2 && record_1.result === record_2.result && record_1.sign === record_2.sign)
@@ -121,6 +122,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
     }
 
     loadRecordFromMemory(event: any) {
+
         let recordIndex: number | undefined = Number(event.target.id);
         let chosenRecord = this.state.memory[recordIndex];
         if(chosenRecord) {
@@ -133,11 +135,11 @@ class Calculator extends React.Component<{}, CalculatorState> {
                 saveActive: false
             }))
         }
-        console.log("The key is");
-        console.log(event.target.id);
+
     }
 
     calculateResult() {
+
         let operation: Operations = this.state.operation;
         let input_1: number | '' = this.state.input_1;
         let input_2: number | '' = this.state.input_2;
@@ -209,6 +211,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
     }
     
     render() {
+        console.log("Rendering")
         return (
             <div className="calculator-container">
                 <InputComponent {...{type: 'number', name: 'input_1', value: this.state.input_1, onChange: this.handleInputChange}} />
