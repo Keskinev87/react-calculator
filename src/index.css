@@ -97,7 +97,7 @@ input {
   cursor: pointer;
 }
 
-.operation-sign {
+.operation-sign, .equality-label {
   line-height: 40px;
   font-size: 25px;
 }
@@ -108,6 +108,7 @@ input {
 }
 
 .equality-label {
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
   cursor: default;
