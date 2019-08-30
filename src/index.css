@@ -69,15 +69,13 @@ footer {
 .calculator-container {
   width: 80%;
   margin-left: 10%;
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
 }
 
 .operations-container, input, .equality-label-container, .result-container, button, .memory-container {
   display: block;
   width: 100%;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 input {
@@ -96,8 +94,12 @@ input {
   box-sizing: border-box;
   border: 2px solid black;
   border-radius: 100%;
-  font-size: 30px;
   cursor: pointer;
+}
+
+.operation-sign {
+  line-height: 40px;
+  font-size: 25px;
 }
 
 .operation.active {
