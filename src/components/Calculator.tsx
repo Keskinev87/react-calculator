@@ -50,8 +50,8 @@ type StateKeys = keyof CalculatorState;
 
 
 class Calculator extends React.Component<{}, CalculatorState> {
-    constructor() {
-        super({});
+    constructor(props:{} ={}) {
+        super(props);
         this.state = initialState;
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleOperationChange = this.handleOperationChange.bind(this);
