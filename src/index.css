@@ -69,13 +69,15 @@ footer {
 .calculator-container {
   width: 80%;
   margin-left: 10%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .operations-container, input, .equality-label-container, .result-container, button, .memory-container {
   display: block;
   width: 100%;
-  margin-top: 25px;
-  margin-bottom: 25px;
 }
 
 input {
