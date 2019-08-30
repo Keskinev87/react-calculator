@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
+import Calculator from './components/Calculator';
+
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      Welcome
+      <header><span>ReactJS-based Calculator App</span></header>
+      <Calculator />
+      <footer></footer>
     </div>
   );
 }

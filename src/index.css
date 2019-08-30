@@ -11,3 +11,146 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App {
+  display: block;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 599px) {
+  .App {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .App {
+    width: 60%;
+    margin-left: 20%;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .App {
+    width: 40%;
+    margin-left: 30%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .App {
+    width: 30%;
+    margin-left: 35%;
+  }
+}
+
+@media only screen and (min-width: 1800px) {
+  .App {
+    width: 30%;
+    margin-left: 35%;
+  }
+}
+
+header, footer {
+  display: block;
+  width: 100%;
+}
+
+header {
+  border-bottom: 2px solid black;
+}
+
+footer {
+  border-top: 2px solid black;
+  height: 23px;
+}
+
+.calculator-container {
+  width: 80%;
+  margin-left: 10%;
+}
+
+.operations-container, input, .equality-label-container, .result-container, button, .memory-container {
+  display: block;
+  width: 100%;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+input {
+  height: 30px;
+  text-align: center;
+}
+.operations-container {
+  display: flex;
+  justify-content: space-between;
+}
+.operation, .equality-label {
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  background-color: lightgray;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 100%;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.operation.active {
+  background-color: lightgreen;
+  cursor: default;
+}
+
+.equality-label {
+  margin-left: auto;
+  margin-right: auto;
+  cursor: default;
+}
+
+.result-container {
+  height: 30px;
+  text-align: center;
+  border: 1px solid grey;
+}
+
+.error-msg {
+  color: red;
+}
+
+button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #b6d7a8;
+  box-shadow: 2px 2px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: grey;
+}
+
+.memory-container {
+  text-align: center;
+}
+
+.memory-list-container {
+  height: 100px;
+  overflow-y: scroll;
+}
+
+.memory-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.memory-list > li {
+  cursor: pointer;
+}
+
+
+
