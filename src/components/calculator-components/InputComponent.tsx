@@ -9,7 +9,7 @@ interface InputProps {
 
 function InputComponent (props: InputProps) {
     return (
-        <input className="number-input" type="text" name={props.name} onChange={props.onChange} value={props.value}></input>
+        <input className="number-input" type={props.type} name={props.name} onChange={props.onChange} value={props.value}></input>
     )
 }
 
