@@ -15,7 +15,7 @@ function MemoryComponent (props: MemoryProps) {
             <div className="memory-list-container">
                 <ul className="memory-list">
                 {(props.memoryRecords).map(record => (
-                    <li key={record.index} onClick={props.onClick} id={record.index.toString()}>{`${record.index}) ${record.input_1} ${record.sign} ${record.input_2} = ${record.result}`}</li>
+                    <li key={record.index} onClick={props.onClick} id={record.index.toString()}>{`${record.index + 1}) ${record.input_1} ${record.sign} ${record.input_2} = ${record.result}`}</li>
                 ))}
                 </ul>
             </div>

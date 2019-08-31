@@ -7,6 +7,7 @@ import MemoryComponent from './calculator-components/MemoryComponent';
 import ErrorMsgComponent from './calculator-components/ErrorMsgComponent';
 
 export interface OperationRecord {
+    [key: string] : number | Operations | string,
     index: number;
     input_1: number;
     input_2: number;
@@ -61,6 +62,10 @@ class Calculator extends React.Component<{}, CalculatorState> {
         this.loadRecordFromMemory = this.loadRecordFromMemory.bind(this);
     }
 
+    componentDidMount() {
+        console.log("Calculator mounted")
+    }
+
     handleInputChange(event: any) {
         let name: StateKeys = event.target && event.target.name;
         let value: number = Number(event.target.value);
@@ -109,12 +114,15 @@ class Calculator extends React.Component<{}, CalculatorState> {
 
     }
 
-    compareMemoryRecords(record_1: OperationRecord | undefined, record_2: OperationRecord | undefined) {
+    compareMemoryRecords(currentRecord: OperationRecord | undefined, lastRecord: OperationRecord | undefined) {
 
-        let different = true;
-
-        if(record_1 && record_2 && record_1.input_1 === record_2.input_1 && record_1.input_2 === record_2.input_2 && record_1.result === record_2.result && record_1.sign === record_2.sign)
-            different = false;
+        let different = false;
+        
+        currentRecord && lastRecord === undefined ? different = true : different = false;
+        currentRecord && lastRecord && Object.keys(currentRecord).forEach((key: string) => {
+            if(key !== 'index' && currentRecord[key] !== lastRecord[key])
+                different = true;
+        })
 
         return different;
     }
@@ -144,17 +152,17 @@ class Calculator extends React.Component<{}, CalculatorState> {
         let result: number | '' = this.state.result;
         let sign: string = '+';
         
-        if(this.state.input_1 && this.state.input_2 && this.validateInputs()) {
+        if(input_1 && input_2 && this.validateInputs()) {
             switch (operation) {
                 case Operations.addition:
-                    result = (input_1 && input_2) && input_1 + input_2;
+                    result = input_1 + input_2;
                     break;
                 case Operations.subtraction:
-                    result = (input_1 && input_2) && input_1 - input_2;
+                    result = input_1 - input_2;
                     sign = '-';
                     break;
                 case Operations.multiplication:
-                    result = (input_1 && input_2) && input_1 * input_2;
+                    result = input_1 * input_2;
                     sign = 'X';
                     break;
                 case Operations.division:
@@ -167,27 +175,27 @@ class Calculator extends React.Component<{}, CalculatorState> {
                         }))
                         break;
                     } else {
-                        result = (input_1 && input_2) && input_1 / input_2;
+                        result = input_1 / input_2;
                         sign = "/";
                         break;
                     }
                 default:
-                    result = (input_1 && input_2) && input_1 + input_2;
+                    result = input_1 + input_2;
                     break;
             }
 
-            if(result) {
+            if(result || result === 0) {
                 let lastRecord = this.state.memory[this.state.memory.length - 1];
                 let currentRecord: OperationRecord = {
                     index: (lastRecord && lastRecord.index + 1) || 0,
-                    input_1: this.state.input_1,
-                    input_2: this.state.input_2,
+                    input_1: input_1,
+                    input_2: input_2,
                     sign: sign,
                     result: result,
                     operation: this.state.operation
                 }
                 
-                let activateSaveButton = this.compareMemoryRecords(lastRecord, currentRecord);
+                let activateSaveButton = this.compareMemoryRecords(currentRecord, lastRecord);
     
                 this.setState((prevState) => ({
                     ...prevState,
@@ -209,7 +217,6 @@ class Calculator extends React.Component<{}, CalculatorState> {
     }
     
     render() {
-        console.log("Rendering")
         return (
             <div className="calculator-container">
                 <InputComponent {...{type: 'number', name: 'input_1', value: this.state.input_1, onChange: this.handleInputChange}} />
