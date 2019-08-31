@@ -65,7 +65,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
     }
 
     componentDidMount() {
-        console.log("Calculator mounted")
+        console.log("Calculator mounted successfully")
     }
 
     componentDidUpdate() {
@@ -75,8 +75,8 @@ class Calculator extends React.Component<{}, CalculatorState> {
     handleInputChange(event: any) {
         let name: StateKeys = event.target && event.target.name;
         let value: any = event.target.value;
-        console.log("The value is")
-        console.log(event.target)
+        // console.log("The value is")
+        // console.log(event.target)
         this.validateInput(value) && this.setState((prevState) => ({
             ...prevState,
             [name]: value,
@@ -101,11 +101,10 @@ class Calculator extends React.Component<{}, CalculatorState> {
 
     validateInput(input: any) {
         let inputIsValid = true;
+
         if(input !== '' && input !== '-' && isNaN(input))
             inputIsValid = false;
-        console.log("Validation is done")
-        console.log(inputIsValid);
-        console.log(input)
+       
         return inputIsValid;
     }
 
@@ -210,7 +209,6 @@ class Calculator extends React.Component<{}, CalculatorState> {
                     break;
             }
 
-        console.log("Result is correct")
         let lastRecord = this.state.memory[this.state.memory.length - 1];
         let currentRecord: OperationRecord = {
             index: (lastRecord && lastRecord.index + 1) || 0,
@@ -219,7 +217,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
             sign: sign,
             result: result,
             operation: this.state.operation
-        }
+        };
         
         let activateSaveButton = (this.compareMemoryRecords(currentRecord, lastRecord) && this.validateRecord(currentRecord));
 
