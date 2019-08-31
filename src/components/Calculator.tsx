@@ -157,6 +157,16 @@ class Calculator extends React.Component<{}, CalculatorState> {
 
     }
 
+    validateRecord(record: OperationRecord) {
+        let isValid = true;
+        Object.keys(record).forEach((key:string) => {
+            if(record[key] === '')
+                isValid = false
+        })
+
+        return isValid;
+    }
+
     calculateResult() {
 
         let operation: Operations = this.state.operation;
@@ -211,7 +221,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
             operation: this.state.operation
         }
         
-        let activateSaveButton = this.compareMemoryRecords(currentRecord, lastRecord);
+        let activateSaveButton = (this.compareMemoryRecords(currentRecord, lastRecord) && this.validateRecord(currentRecord));
 
         this.setState((prevState) => ({
             ...prevState,
