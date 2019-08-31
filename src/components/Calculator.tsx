@@ -24,9 +24,10 @@ export enum Operations {
 }
 
 interface CalculatorState {
-    input_1: number | '';
-    input_2: number | '';
+    input_1: number | '' | '-';
+    input_2: number | '' | '-';
     operation: Operations;
+    calculateResult: boolean,
     result: number | '';
     currentOperationRecord: OperationRecord | undefined,
     saveActive: boolean,
@@ -39,6 +40,7 @@ const initialState: CalculatorState = {
     input_1: '',
     input_2: '',
     operation: Operations.addition,
+    calculateResult: false,
     result: '',
     currentOperationRecord: undefined,
     saveActive: false,
@@ -56,7 +58,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
         this.state = initialState;
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleOperationChange = this.handleOperationChange.bind(this);
-        this.validateInputs = this.validateInputs.bind(this);
+        this.validateInput = this.validateInput.bind(this);
         this.calculateResult = this.calculateResult.bind(this);
         this.addToMemory = this.addToMemory.bind(this);
         this.loadRecordFromMemory = this.loadRecordFromMemory.bind(this);
@@ -66,15 +68,27 @@ class Calculator extends React.Component<{}, CalculatorState> {
         console.log("Calculator mounted")
     }
 
+    componentDidUpdate() {
+        this.state.calculateResult && this.calculateResult();
+    }
+
     handleInputChange(event: any) {
         let name: StateKeys = event.target && event.target.name;
-        let value: number = Number(event.target.value);
-        this.setState((prevState) => ({
+        let value: any = event.target.value;
+        console.log("The value is")
+        console.log(event.target)
+        this.validateInput(value) && this.setState((prevState) => ({
             ...prevState,
             [name]: value,
-        }), () => {
-            name === 'input_2' && this.calculateResult();
-        });
+            saveActive: false,
+            calculateResult: name === "input_2" && value !== '-' ? true : false
+        }))
+
+        !this.validateInput(value) && this.setState((prevState) => ({
+            ...prevState,
+            isError: true,
+            error: "Only numerical values are alowed!"
+        }))
     }
 
     handleOperationChange(event: any) {
@@ -85,15 +99,14 @@ class Calculator extends React.Component<{}, CalculatorState> {
         }))
     }
 
-    validateInputs(input_1: any = this.state.input_1, input_2: any = this.state.input_2) {
-        let inputsAreValid = true;
-        if(input_1 === '' || input_2 === '')
-            inputsAreValid = false;
-        if(isNaN(input_1) || isNaN(input_2))
-            inputsAreValid = false;
+    validateInput(input: any) {
+        let inputIsValid = true;
+        if(input !== '' && input !== '-' && isNaN(input))
+            inputIsValid = false;
         console.log("Validation is done")
-        console.log(inputsAreValid);
-        return inputsAreValid;
+        console.log(inputIsValid);
+        console.log(input)
+        return inputIsValid;
     }
 
     addToMemory() {
@@ -147,73 +160,67 @@ class Calculator extends React.Component<{}, CalculatorState> {
     calculateResult() {
 
         let operation: Operations = this.state.operation;
-        let input_1: number | '' = this.state.input_1;
-        let input_2: number | '' = this.state.input_2;
-        let result: number | '' = this.state.result;
+        let input_1: any = this.state.input_1;
+        let input_2: any = this.state.input_2;
+        let result: number | '' = '';
         let sign: string = '+';
         
-        if(input_1 && input_2 && this.validateInputs()) {
+        if(operation === Operations.division && Number(input_2) === 0) {
+            console.log("input 2 is 0")
+            this.setState((prevState) => ({
+                ...prevState,
+                result: '',
+                calculateResult: false,
+                isError: true,
+                error: "You cannot divide by 0"
+            }))
+        } else {
             switch (operation) {
                 case Operations.addition:
-                    result = input_1 + input_2;
+                    result = Number(input_1) + Number(input_2);
                     break;
                 case Operations.subtraction:
-                    result = input_1 - input_2;
+                    result = Number(input_1) - Number(input_2);
                     sign = '-';
                     break;
                 case Operations.multiplication:
-                    result = input_1 * input_2;
+                    result = Number(input_1) * Number(input_2);
                     sign = 'X';
                     break;
                 case Operations.division:
-                    if(Number(input_2) === 0) {
-                        this.setState((prevState) => ({
-                            ...prevState,
-                            result: '',
-                            isError: true,
-                            error: "You cannot divide by 0"
-                        }))
-                        break;
-                    } else {
-                        result = input_1 / input_2;
-                        sign = "/";
-                        break;
-                    }
+                    result = Number(input_1) / Number(input_2);
+                    sign = "/";
+                    break;
                 default:
-                    result = input_1 + input_2;
+                    result = Number(input_1) + Number(input_2);
                     break;
             }
 
-            if(result || result === 0) {
-                let lastRecord = this.state.memory[this.state.memory.length - 1];
-                let currentRecord: OperationRecord = {
-                    index: (lastRecord && lastRecord.index + 1) || 0,
-                    input_1: input_1,
-                    input_2: input_2,
-                    sign: sign,
-                    result: result,
-                    operation: this.state.operation
-                }
-                
-                let activateSaveButton = this.compareMemoryRecords(currentRecord, lastRecord);
-    
-                this.setState((prevState) => ({
-                    ...prevState,
-                    result: result,
-                    currentOperationRecord: currentRecord,
-                    saveActive: activateSaveButton,
-                    isError: false,
-                    error: ""
-                }));
+            console.log("Result is correct")
+            let lastRecord = this.state.memory[this.state.memory.length - 1];
+            let currentRecord: OperationRecord = {
+                index: (lastRecord && lastRecord.index + 1) || 0,
+                input_1: input_1,
+                input_2: input_2,
+                sign: sign,
+                result: result,
+                operation: this.state.operation
             }
             
-        } else {
+            let activateSaveButton = this.compareMemoryRecords(currentRecord, lastRecord);
+
             this.setState((prevState) => ({
                 ...prevState,
-                isError: true,
-                error: "Only numbers are allowed as inputs!"
-            }))
+                result: result,
+                calculateResult: false,
+                currentOperationRecord: currentRecord,
+                saveActive: activateSaveButton,
+                isError: false,
+                error: ""
+            }));
+            
         }
+        
     }
     
     render() {
