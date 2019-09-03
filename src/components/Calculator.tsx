@@ -75,7 +75,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
     handleInputChange(event: any) {
         let name: StateKeys = event.target && event.target.name;
         let value: any = event.target.value;
-        console.log(value)
+        // console.log(value)
         this.validateInput(value) && this.setState((prevState) => ({
             ...prevState,
             [name]: this.trimValue(prevState[name], value),
