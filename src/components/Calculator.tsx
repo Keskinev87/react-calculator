@@ -93,9 +93,9 @@ class Calculator extends React.Component<{}, CalculatorState> {
     trimValue(prevValue: any, value: any) {
         if(prevValue === '0' && value === '00')
             return prevValue;
-        if(Number(value) % 1 === 0 && Number(value) !== 0)
+        if(Number(value) % 1 === 0 && Number(value) !== 0 && value !== '')
             return value.replace(/^0+/, '');
-        if(prevValue.includes('.') && value === '') {
+        if(prevValue.includes('.') && isNaN(value)) {
             return prevValue;
         }
         console.log("Default");
@@ -108,14 +108,15 @@ class Calculator extends React.Component<{}, CalculatorState> {
         let value: Operations = event.target.id;
         this.setState((prevState) => ({
             ...prevState,
-            operation: value
+            operation: value,
+            calculateResult: (this.validateInput(this.state.input_1) && this.validateInput(this.state.input_2)) ? true : false
         }))
     }
 
     validateInput(input: any) {
         let inputIsValid = true;
 
-        if(input !== '-' && isNaN(input)) {
+        if(input !== '' && input !== '-' && isNaN(input)) {
             console.log("input error")
             inputIsValid = false;
         }
@@ -252,14 +253,14 @@ class Calculator extends React.Component<{}, CalculatorState> {
     render() {
         return (
             <div className="calculator-container">
-                <InputComponent {...{type: 'number', name: 'input_1', value: this.state.input_1, onChange: this.handleInputChange}} />
+                <InputComponent {...{type: 'text', name: 'input_1', value: this.state.input_1, onChange: this.handleInputChange}} />
                 <div className="operations-container">
                     <OperationComponent {...{id: Operations.addition, class: this.state.operation === Operations.addition ? 'active' : '', value: '+', onClick: this.handleOperationChange}}/>
                     <OperationComponent {...{id: Operations.subtraction, class: this.state.operation === Operations.subtraction ? 'active' : '', value: '-', onClick: this.handleOperationChange}}/>
                     <OperationComponent {...{id: Operations.multiplication, class: this.state.operation === Operations.multiplication ? 'active' : '', value: 'X', onClick: this.handleOperationChange}}/>
                     <OperationComponent {...{id: Operations.division, class: this.state.operation === Operations.division ? 'active' : '', value: '/', onClick: this.handleOperationChange}}/>
                 </div>
-                <InputComponent {...{type: 'number', name: 'input_2', value: this.state.input_2, onChange: this.handleInputChange}} />
+                <InputComponent {...{type: 'text', name: 'input_2', value: this.state.input_2, onChange: this.handleInputChange}} />
                 <div className="equality-label-container"><div className="equality-label">=</div></div>
                 <ResultComponent {...{value: this.state.result}}/>
                 {this.state.isError && <ErrorMsgComponent {...{text: this.state.error}}/>}
