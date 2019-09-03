@@ -80,6 +80,8 @@ class Calculator extends React.Component<{}, CalculatorState> {
             ...prevState,
             [name]: this.trimValue(prevState[name], value),
             saveActive: false,
+            isError: false,
+            error: '',
             calculateResult: name === "input_2" ? true : false
         }))
 
