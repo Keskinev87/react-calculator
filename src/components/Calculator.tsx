@@ -93,8 +93,8 @@ class Calculator extends React.Component<{}, CalculatorState> {
     trimValue(prevValue: any, value: any) {
         if(prevValue === '0' && value === '00')
             return prevValue;
-        if(Number(value) % 1 === 0 && Number(value) !== 0 && value !== '')
-            return value.replace(/^0+/, '');
+        if(!isNaN(value) && Number(value) !== 0 && value !== '')
+            return Number(value.replace(/^0+/, '')).toString();
         if(prevValue.includes('.') && isNaN(value)) {
             return prevValue;
         }
