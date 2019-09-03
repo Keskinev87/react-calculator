@@ -79,7 +79,7 @@ class Calculator extends React.Component<{}, CalculatorState> {
         // console.log(event.target)
         this.validateInput(value) && this.setState((prevState) => ({
             ...prevState,
-            [name]: value,
+            [name]: this.trimValue(value),
             saveActive: false,
             calculateResult: name === "input_2" ? true : false
         }))
@@ -89,6 +89,14 @@ class Calculator extends React.Component<{}, CalculatorState> {
             isError: true,
             error: "Only numerical values are alowed!"
         }))
+    }
+
+    trimValue(value: any) {
+        
+        if(Number(value) % 1 === 0 && Number(value) !== 0) {
+            return value.replace(/^0+/, '');
+        } else
+            return value;
     }
 
     handleOperationChange(event: any) {
@@ -190,22 +198,22 @@ class Calculator extends React.Component<{}, CalculatorState> {
         else
             switch (operation) {
                 case Operations.addition:
-                    result = Number(input_1) + Number(input_2);
+                    result = Math.round((Number(input_1) + Number(input_2)) * 1e12) / 1e12;
                     break;
                 case Operations.subtraction:
-                    result = Number(input_1) - Number(input_2);
+                    result = Math.round((Number(input_1) - Number(input_2)) * 1e12) / 1e12;
                     sign = '-';
                     break;
                 case Operations.multiplication:
-                    result = Number(input_1) * Number(input_2);
+                    result = Math.round((Number(input_1) * Number(input_2)) * 1e12) / 1e12;
                     sign = 'X';
                     break;
                 case Operations.division:
-                    result = Number(input_1) / Number(input_2);
+                    result = Math.round((Number(input_1) / Number(input_2)) * 1e12) / 1e12;
                     sign = "/";
                     break;
                 default:
-                    result = Number(input_1) + Number(input_2);
+                    result = Math.round((Number(input_1) + Number(input_2)) * 1e12) / 1e12;
                     break;
             }
 
