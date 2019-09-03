@@ -75,11 +75,10 @@ class Calculator extends React.Component<{}, CalculatorState> {
     handleInputChange(event: any) {
         let name: StateKeys = event.target && event.target.name;
         let value: any = event.target.value;
-        // console.log("The value is")
-        // console.log(event.target)
+        console.log(value)
         this.validateInput(value) && this.setState((prevState) => ({
             ...prevState,
-            [name]: this.trimValue(value),
+            [name]: this.trimValue(prevState[name], value),
             saveActive: false,
             calculateResult: name === "input_2" ? true : false
         }))
@@ -91,12 +90,18 @@ class Calculator extends React.Component<{}, CalculatorState> {
         }))
     }
 
-    trimValue(value: any) {
-        
-        if(Number(value) % 1 === 0 && Number(value) !== 0) {
+    trimValue(prevValue: any, value: any) {
+        if(prevValue === '0' && value === '00')
+            return prevValue;
+        if(Number(value) % 1 === 0 && Number(value) !== 0)
             return value.replace(/^0+/, '');
-        } else
-            return value;
+        if(prevValue.includes('.') && value === '') {
+            return prevValue;
+        }
+        console.log("Default");
+        return value;
+        
+            
     }
 
     handleOperationChange(event: any) {
@@ -110,8 +115,11 @@ class Calculator extends React.Component<{}, CalculatorState> {
     validateInput(input: any) {
         let inputIsValid = true;
 
-        if(input !== '' && input !== '-' && isNaN(input))
+        if(input !== '-' && isNaN(input)) {
+            console.log("input error")
             inputIsValid = false;
+        }
+           
        
         return inputIsValid;
     }
