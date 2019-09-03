@@ -95,10 +95,11 @@ class Calculator extends React.Component<{}, CalculatorState> {
     trimValue(prevValue: any, value: any) {
         if(prevValue === '0' && value === '00')
             return prevValue;
-        if(!isNaN(value) && Number(value) !== 0 && value !== '')
-            return Number(value.replace(/^0+/, '')).toString();
-        if(prevValue.includes('.') && isNaN(value)) {
-            return prevValue;
+        if(!isNaN(value) && Number(value) !== 0 && value[0] === '0'){
+            if(value.includes('.'))
+                return value.replace(/^0+/, '0');
+            else
+                return value.replace(/^0+/, '');
         }
         console.log("Default");
         return value;
