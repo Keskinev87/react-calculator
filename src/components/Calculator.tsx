@@ -92,7 +92,9 @@ class Calculator extends React.Component<{}, CalculatorState> {
         }))
     }
 
-    trimValue(prevValue: any, value: any) {
+    trimValue(prevValue: any, initialValue: any) {
+        let value = initialValue.replace(',', '.');
+
         if(prevValue === '0' && value === '00')
             return prevValue;
         if(!isNaN(value) && Number(value) !== 0 && value[0] === '0'){
@@ -122,6 +124,8 @@ class Calculator extends React.Component<{}, CalculatorState> {
         if(input !== '' && input !== '-' && isNaN(input)) {
             console.log("input error")
             inputIsValid = false;
+            if(input[input.length-1] === ',')
+                inputIsValid = true;
         }
            
        
